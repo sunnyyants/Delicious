@@ -1,13 +1,4 @@
-/*.socials a, .box img, .div-tabs img
-{
-	behavior:url(js/PIE.htc);
-	position: relative;
-}
 
-.price, .block1 .price strong
-{
-	behavior:url(js/PIE.htc);
-}*/
 
 .block1 .price strong {
 	display: none;
