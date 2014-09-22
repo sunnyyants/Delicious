@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <!--mapping the User entity-->
+
+    <class name="com.models.User" table="user" schema="" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="username"/>
+        <property name="password"/>
+        <property name="firstname"/>
+        <property name="lastname"/>
+        <property name="address"/>
+        <property name="zipcode"/>
+        <property name="phone"/>
+        <property name="email"/>
+        <property name="registerDate"/>
+
+        <set name="orders" inverse="true" cascade="all" lazy="true">
+            <key column="userId"/>
+            <one-to-many class="com.models.Order"/>
+        </set>
+        <set name="likes" inverse="true" cascade="all" lazy="true">
+            <key column="userId"/>
+            <one-to-many class="com.models.Likes"/>
+        </set>
+        <set name="deliveries" inverse="true" cascade="all" lazy="true">
+            <key column="userId"/>
+            <one-to-many class="com.models.Delivery"/>
+        </set>
+        <set name="messages" inverse="true" cascade="all" lazy="true">
+            <key column="userId"/>
+            <one-to-many class="com.models.Message"/>
+        </set>
+        <set name="reservations" inverse="true" cascade="all" lazy="true">
+            <key column="userId"/>
+            <one-to-many class="com.models.Reservation"/>
+        </set>
+    </class>
+
+    <!--mapping the Manager entity-->
+
+    <class name="com.models.Manager" table="manager" schema="" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="username"/>
+        <property name="password"/>
+        <property name="firstname"/>
+        <property name="lastname"/>
+        <property name="address"/>
+        <property name="zipcode"/>
+        <property name="phone"/>
+        <property name="email"/>
+        <property name="registerDate"/>
+
+    </class>
+
+    <!--mapping the Order entity-->
+
+    <class name="com.models.Order" table="orders" schema="" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="dateOfOrder"/>
+        <property name="status" type="java.lang.String"/>
+        <property name="total"/>
+        <many-to-one name="userOrdered" column="userId" class="com.models.User"/>
+        <set name="lineItems" inverse="true" cascade="all" lazy="true">
+            <key column="orderId"/>
+            <one-to-many class="com.models.LineItem"/>
+        </set>
+    </class>
+
+    <!--mapping the LineItem entity-->
+
+    <class name="com.models.LineItem" table="lineItems" schema="" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="quantity" not-null="true" />
+        <many-to-one name="order" column="orderId" class="com.models.Order" />
+        <many-to-one name="menu" column="menuId" class="com.models.Menu"/>
+    </class>
+
+    <!--mapping the Menu entity-->
+
+    <class name="com.models.Menu" schema="" table="menu" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="name" />
+        <property name="imageURL" />
+        <property name="description"/>
+        <property name="price"/>
+        <property name="average" type="java.lang.Float">
+            <column name="average" not-null="true" default="0.0"/>
+        </property>
+
+        <set name="likes" inverse="true" cascade="all" lazy="true">
+            <key column="menuId"/>
+            <one-to-many class="com.models.Likes"/>
+        </set>
+        <set name="lineItems" inverse="true" cascade="all" lazy="true">
+            <key column="menuId"/>
+            <one-to-many class="com.models.LineItem"/>
+        </set>
+        <many-to-one name="genre" column="genreId" class="com.models.Genre"/>
+    </class>
+
+    <!--mapping the Likes entity-->
+
+    <class name="com.models.Likes" schema="" table="likes" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="score"/>
+
+        <many-to-one name="likedMenu" column="menuId" class="com.models.Menu"/>
+        <many-to-one name="userLike" column="userId" class="com.models.User"/>
+    </class>
+
+    <!--mapping the Genre entity-->
+
+    <class name="com.models.Genre" schema="" table="genre" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="name"/>
+        <set name="menuSet" cascade="all" lazy="true" inverse="true">
+            <key column="genreId"/>
+            <one-to-many class="com.models.Menu"/>
+        </set>
+    </class>
+
+    <!--mapping the Delivery entity-->
+    <class name="com.models.Delivery" schema="" table="delivery" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <many-to-one name="userNeedForDelivery" column="userId" class="com.models.User"/>
+        <many-to-one name="orderNeedForDelivery" column="orderId" class="com.models.Order"/>
+    </class>
+
+    <!--mapping the Reservation entity-->
+    <class name="com.models.Reservation" schema="" table="reservation" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="tableNumber"/>
+        <many-to-one name="reservationDate" column="Did" class="com.models.ReservationDate"/>
+        <many-to-one name="userReserved" column="userId" class="com.models.User"/>
+    </class>
+
+    <!--mapping the ReservationDate entity-->
+    <class name="com.models.ReservationDate" schema="" table="reservationDate" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="reservationDate"/>
+        <property name="maximumReservations"/>
+        <property name="seatsReserved"/>
+        <set name="reservationSet" cascade="all" lazy="true" inverse="true">
+            <key column="Did"/>
+            <one-to-many class="com.models.Reservation"/>
+        </set>
+
+    </class>
+
+    <class name="com.models.Message" schema="" table="message" catalog="finalProject">
+        <id name="id">
+            <generator class="increment"/>
+        </id>
+        <property name="message"/>
+        <property name="status" type="java.lang.String"/>
+        <property name="title"/>
+        <property name="dateOfCreated"/>
+        <many-to-one name="userLeftMessage" column="userId" class="com.models.User"/>
+    </class>
+
+    <!--mapping the Authority-->
+
+
+</hibernate-mapping>
+

@@ -1,0 +1,71 @@
+input.button {
+    border:0 solid #FFCC00;
+    color: #5f5e4f;
+    font-size: 14pt;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 28px;
+    line-height: normal;
+    background-color: transparent;
+    transition: color s;
+    -webkit-transition: color 0.5s; /* Chrome & safari */
+    -moz-transition: color 0.5s; /* firefox */
+}input.button:hover {
+    color: #d8c085;
+ }input.button:active {
+      position:relative;
+      top:1px;
+  }
+
+input.button_h {
+    border:0 solid #FFCC00;
+    color: #5f5e4f;
+    font-size: 22pt;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 28px;
+    line-height: normal;
+    background-color: transparent;
+    transition: color s;
+    -webkit-transition: color 0.5s; /* Chrome & safari */
+    -moz-transition: color 0.5s; /* firefox */
+}input.button_h:hover {
+     color: #d8c085;
+ }input.button_h:active {
+      position:relative;
+      top:1px;
+  }
+input.button_m {
+    border:0 solid #FFCC00;
+    color: #5f5e4f;
+    font-size: 12pt;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 28px;
+    line-height: normal;
+    background-color: transparent;
+    transition: color s;
+    -webkit-transition: color 0.5s; /* Chrome & safari */
+    -moz-transition: color 0.5s; /* firefox */
+    margin-top: 18px;
+}input.button_m:hover {
+     color: #d8c085;
+ }input.button_m:active {
+      position:relative;
+      top:1px;
+  }
+input.button_sel {
+    border:0 solid #FFCC00;
+    color: #d8c085;
+    font-size: 14pt;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    height: 28px;
+    line-height: normal;
+    background-color: transparent;
+ }
+/* This button was generated using CSSButtonGenerator.com */

@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+
+    <package name="manager_case"  extends="struts-default">
+        <action name="saveManager" class="com.actions.ManagerAction" method="saveManager">
+            <result name="success">/ManagerPages/ManagerLogin.jsp</result>
+            <result name="error">/ManagerPages/ManagerRegister.jsp</result>
+        </action>
+
+        <action name="findManager" class="com.actions.ManagerAction" method="findManger">
+            <result name="success">/welcome.jsp</result>
+        </action>
+
+        <!--<action name="findAllManagers" class="com.actions.ManagerAction" method="findAllManagers">-->
+            <!--<result name="success">/userPages/userList.jsp</result>-->
+        <!--</action>-->
+
+        <action name="ManagerloginValidated" class="com.actions.ManagerAction" method="managerLogin">
+            <result name="success" type="redirectAction">controlPannelPreload</result>
+            <result name="error">/ManagerPages/ManagerLoginError.jsp</result>
+            <result name="USERNAME_NULL">/ManagerPages/ManagerLogin.jsp</result>
+            <result name="PASSWORD_NULL">/ManagerPages/ManagerLogin.jsp</result>
+        </action>
+
+
+    </package>
+
+
+    <package name="user_case" extends="struts-default">
+
+        <action name="saveUser" class="com.actions.UserAction" method="saveUser">
+            <result name="success">/userPages/login.jsp</result>
+            <result name="error">/userPages/register.jsp</result>
+        </action>
+
+        <action name="findUser" class="com.actions.UserAction" method="findUser">
+            <result name="success">/welcome.jsp</result>
+        </action>
+
+        <action name="loginValidated" class="com.actions.UserAction" method="userLogin">
+            <result name="success">/welcome.jsp</result>
+            <result name="error" type="redirect">/userPages/loginError.jsp</result>
+            <result name="USERNAME_NULL">/userPages/login.jsp</result>
+            <result name="PASSWORD_NULL">/userPages/login.jsp</result>
+        </action>
+
+        <action name="updateUserInfo" class="com.actions.UserAction" method="updateUserInfo">
+            <result name="success">/userPages/userUpdateSuccess.jsp</result>
+        </action>
+
+        <action name="userLogout" class="com.actions.UserAction" method="userLogout">
+            <result name="success">/redirect2Index.jsp</result>
+        </action>
+        <action name="deleteUser" class="com.actions.UserAction" method="deleteUser">
+            <result name="success">/redirect2Index.jsp</result>
+        </action>
+        <action name="updateUserPassWord" class="com.actions.UserAction" method="updateUserPassword">
+            <result name="success">/userPages/userUpdateSuccess.jsp</result>
+            <result name="error">/userPages/updateUserInfos.jsp</result>
+        </action>
+
+    </package>
+
+
+    <package name="menu_case" extends="struts-default">
+        
+
+
+        <action name="topThree" class="com.actions.MenuAction" method="topThree">
+            <result name="success">/index.jsp</result>
+            <!--<interceptor-ref name="myUserLoginStack"/>-->
+        </action>
+
+        <action name="findAllMenuWithLike" class="com.actions.MenuAction" method="findAllMenu">
+            <result name="success">/menuPages/menuWithLikes.jsp</result>
+        </action>
+
+        <action name="redirectToUpdate" class="com.actions.MenuAction" method="redirectToUpdate">
+            <!--modified-->
+            <result name="redirected" type="redirectAction">preLoadAllGenresForUpdate</result>
+        </action>
+
+        <action name="findAllFoodsByGenres" class="com.actions.MenuAction" method="findAllFoodsByGenre">
+            <result name="success">/menuPages/menuWithLikes.jsp</result>
+        </action>
+
+        <action name="findFood" class="com.actions.MenuAction" method="findMenu">
+            <result name="success">/menuPages/singleMenu.jsp</result>
+        </action>
+
+        <action name="showMenuByGenres" class="com.actions.MenuAction" method="findGenresAndMenus">
+            <result name="success">/menuPages/showMenus.jsp</result>
+        </action>
+
+    </package>
+
+
+    <package name="like_case" extends="struts-default">
+
+    </package>
+
+
+    <package name="genre_case" extends="struts-default">
+        <action name="createGenre" class="com.actions.GenreAction" method="createGenre">
+            <!--modified-->
+            <result name="success" type="redirectAction">findAllGenre</result>
+        </action>
+        <action name="deleteGenre" class="com.actions.GenreAction" method="deleteGenre">
+            <!--modified-->
+            <result name="success" type="redirectAction">findAllGenreForDelete</result>
+        </action>
+        <action name="findAllGenre" class="com.actions.GenreAction" method="findAllGenres">
+            <result name="success">/GenrePages/showAllGenres.jsp</result>
+        </action>
+
+    </package>
+
+    <package name="order_case" extends="struts-default">
+
+
+        <action name="controlPannelPreload" class="com.actions.OrderAction" method="controlPannelPreload">
+            <result name="success">/ManagerPages/ControlPannel.jsp</result>
+        </action>
+    </package>
+
+
+    <package name="manager_management_cases" extends="struts-default">
+        <interceptors>
+            <interceptor name="checkManagerLogin" class="com.interceptors.managerLoginInterceptor">
+            </interceptor>
+
+            <interceptor-stack name="myManagerLogin">
+                <interceptor-ref name="checkManagerLogin"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+        </interceptors>
+
+        <default-interceptor-ref name="myManagerLogin"/>
+
+        <global-results>
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+        </global-results>
+
+
+
+        <action name="saveMenu" class="com.actions.MenuAction" method="saveMenu">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/menuPages/updateMenuSuccess.jsp</result>
+            <result name="EXCEPTION">/menuPages/updateMenuSuccess.jsp</result>
+        </action>
+
+        <action name="findAllMenuForUpdate" class="com.actions.MenuAction" method="findAllMenu">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerShowMenusForUpdate.jsp</result>
+
+        </action>
+
+        <action name="findAllMenuForDelete" class="com.actions.MenuAction" method="findAllMenu">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerShowMenusForDelete.jsp</result>
+            <!--<interceptor-ref name="myUserLoginStack"/>-->
+        </action>
+
+        <action name="findAllMenus" class="com.actions.MenuAction" method="findAllMenu">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerCheckMenus.jsp</result>
+        </action>
+
+        <action name="deleteMenu" class="com.actions.MenuAction" method="deleteMenu">
+            <!--modified-->
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">findAllMenuForDelete</result>
+        </action>
+
+        <action name="updateMenu" class="com.actions.MenuAction" method="updateMenu">
+            <!--modified-->
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">findAllMenuForUpdate</result>
+        </action>
+
+        <action name="managerCheckOrderForDelete" class="com.actions.OrderAction" method="ManagerCheckOrders">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerCheckOrdersForDelete.jsp</result>
+        </action>
+
+        <action name="managerDeleteOrder" class="com.actions.OrderAction" method="managerDeleteOrder">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">managerCheckOrderForDelete</result>
+        </action>
+
+        <action name="updateOrderStatus" class="com.actions.OrderAction" method="updateOrderStatus">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">managerUpdateOrders</result>
+        </action>
+
+        <action name="findAllGenreForDelete" class="com.actions.GenreAction" method="findAllGenres">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerDeleteGenre.jsp</result>
+        </action>
+
+        <action name="preLoadAllGenres" class="com.actions.GenreAction" method="findAllGenres">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerAddMenu.jsp</result>
+        </action>
+
+        <action name="preLoadAllGenresForUpdate" class="com.actions.GenreAction" method="findAllGenres">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerUpdateMenu.jsp</result>
+        </action>
+
+        <action name="updateMangaerInfo" class="com.actions.ManagerAction" method="updateManagerInfo">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/managerUpdateSuccess.jsp</result>
+        </action>
+
+        <action name="managerLogout" class="com.actions.ManagerAction" method="managerLogout">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirect">/redirect2Index.jsp</result>
+        </action>
+
+        <action name="deleteManager" class="com.actions.ManagerAction" method="deleteManager">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/index.jsp</result>
+        </action>
+
+        <action name="updateManagerPassword" class="com.actions.ManagerAction" method="updateManagerPassword">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/managerUpdateSuccess.jsp</result>
+            <result name="error">/ManagerPages/updateManagerInfos.jsp</result>
+        </action>
+
+        <action name="findAllUsers" class="com.actions.UserAction" method="findAllUsers">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerCheckAllUsers.jsp</result>
+        </action>
+
+        <action name="findAllUsersForDelete" class="com.actions.UserAction" method="findAllUsers">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerCheckAllUsersForDelete.jsp</result>
+        </action>
+
+        <action name="deleteSelectUser" class="com.actions.UserAction" method="deleteSelectUser">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirect">findAllUsersForDelete.action</result>
+        </action>
+
+
+
+        <action name="managerCheckOrders" class="com.actions.OrderAction" method="ManagerCheckOrders">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/managerCheckOrders.jsp</result>
+        </action>
+
+        <action name="managerUpdateOrders" class="com.actions.OrderAction" method="ManagerCheckOrders">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerUpdateOrder.jsp</result>
+        </action>
+
+        <action name="managerCheckMessagesForUpdate" class="com.actions.MessageAction" method="findAllMessage">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerCheckMessages.jsp</result>
+        </action>
+
+        <action name="managerUpdateMessage" class="com.actions.MessageAction" method="updateMessageStatus">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">managerCheckMessagesForUpdate</result>
+        </action>
+
+        <action name="deleteDeliveries" class="com.actions.DeliveryAction" method="deleteDelivery">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">managerShowDeliveries</result>
+        </action>
+
+        <action name="managerShowDeliveries" class="com.actions.DeliveryAction" method="findAllDeliveries">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerShowAllDeliveryForDelete.jsp</result>
+        </action>
+
+        <action name="createReservationDate" class="com.actions.ReservationDateAction" method="createReservationDate">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success" type="redirectAction">controlPannelPreload</result>
+        </action>
+
+        <action name="showAllReservationDate" class="com.actions.ReservationDateAction" method="preloadAllReservationDateForManager">
+            <result name="MANAGERNEEDTOLOGIN" type="redirect">ManagerPages/ManagerLogin.jsp</result>
+            <result name="success">/ManagerPages/ManagerupdateAndDeleteReservationDate.jsp</result>
+        </action>
+
+    </package>
+
+    <package name="user_use_case" extends="struts-default">
+        <interceptors>
+            <interceptor name="checkUserLogin" class="com.interceptors.userLoginInterceptor">
+            </interceptor>
+                    
+            <interceptor-stack name="myUserLoginStack">
+                <interceptor-ref name="checkUserLogin"/>
+                <interceptor-ref name="defaultStack"/>
+            </interceptor-stack>
+
+        </interceptors>
+
+        <default-interceptor-ref name="myUserLoginStack"/>
+
+        <global-results>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+        </global-results>
+
+        <action name="insertLineItems" class="com.actions.MenuAction" method="createLineItems">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success" type="redirectAction">showShoppingCar</result>
+        </action>
+
+        <action name="showShoppingCar" class="com.actions.LineItemAction" method="findAllItems">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success">/orderPages/showCart.jsp</result>
+        </action>
+
+        <action name="updateItemQuantity" class="com.actions.LineItemAction" method="updateItemQuantity">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success" type="redirectAction">showShoppingCar</result>
+        </action>
+
+        <action name="deleteItem" class="com.actions.LineItemAction" method="deleteItem">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success" type="redirectAction">showShoppingCar</result>
+        </action>
+
+        <action name="createLike" class="com.actions.LikeAction" method="createAndUpdateLike">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success" type="redirectAction">showMenuByGenres</result>
+        </action>
+
+        <action name="createOrder" class="com.actions.OrderAction" method="createOrder">
+            <!--modified-->
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success" type="redirectAction">insertLineItems</result>
+        </action>
+
+        <action name="deleteOrder" class="com.actions.OrderAction" method="deleteOrder">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success">/orderPages/deleteTempSuccess.jsp</result>
+        </action>
+
+        <action name="orderCheckout" class="com.actions.OrderAction" method="checkOut">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success">/orderPages/checkOut.jsp</result>
+        </action>
+
+        <action name="createMessage" class="com.actions.MessageAction" method="createMessage">
+            <interceptor-ref name="myUserLoginStack"/>
+            <result name="NEEDTOLOGIN" type="redirect">userPages/login.jsp</result>
+            <result name="success">/MessagePage/messageCreated.jsp</result>
+
+        </action>
+
+        <action name="userCheckOrders" class="com.actions.OrderAction" method="UserCheckOrders">
+            <result name="success">/orderPages/userCheckOrder.jsp</result>
+        </action>
+
+        <action name="createReservation" class="com.actions.ReservationAction" method="createReservation">
+            <result name="success">redirect2Index.jsp</result>
+            <result name="error">/userPages/reservationErrorPage.jsp</result>
+
+        </action>
+
+
+    </package>
+
+    <package name="reservation_case" extends="struts-default">
+
+        <action name="preloadAllReservationDateForUser" class="com.actions.ReservationDateAction" method="preloadAllReservationDateForUser">
+            <result name="success">/userPages/reservation.jsp</result>
+        </action>
+
+        <action name="updateReservationDate" class="com.actions.ReservationDateAction" method="updateReservationDate">
+            <result name="success" type="redirectAction">showAllReservationDate</result>
+        </action>
+        <action name="deleteReservationDate" class="com.actions.ReservationDateAction" method="deleteReservationDate">
+            <result name="success" type="redirectAction">showAllReservationDate</result>
+        </action>
+
+
+        <action name="showAllReservationForUpdateAndDelete" class="com.actions.ReservationAction" method="showAllReservations">
+            <result name="success">/ManagerPages/showAllReservationsForUpdateAndDelete.jsp</result>
+        </action>
+
+        <action name="deleteReservation" class="com.actions.ReservationAction" method="deleteReservation">
+            <result name="success" type="redirectAction">showAllReservationForUpdateAndDelete</result>
+        </action>
+
+    </package>
+
+</struts>
